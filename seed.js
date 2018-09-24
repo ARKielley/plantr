@@ -1,34 +1,38 @@
 const {db, Gardener, Plot, Vegetable} = require('./models');
+const PlotVegetable = db.model('vegetable_plot');
 
 db.sync({ force: true })
   .then(x => {
     console.log('db connection is lit');
-    const carrot = Vegetable.create({
+    Vegetable.create({
       name: 'carrots',
       color: 'purple',
       planted_on: new Date()
-    });
-    const carrotGardener = carrot.then(veg => {
+    })
+    .then(veg => {
       return Gardener.create({
         name: 'Murgatroyd',
         age: 2,
         favorite_vegetable: veg.id
       });
-    });
-    const carrotPlot = carrotGardener.then(gard => {
+    })
+    .then(gard => {
       return Plot.create({
         size: 10,
         shaded: false,
         gardenerId: gard.id
       });
-    });
-    carrotPlot.then(plot => {
-      plot.addVegetable(carrot.id);
     })
-  })
+    .then(plot => {
+      return PlotVegetable
+    })
+  // })
+  // .then(veg => {
+  //   return veg.addPlot();
+  // })
   // .then(x => {
   //   db.close();
-  // })
+  })
   .catch(err => {
     console.log(err);
     db.close();
