@@ -25,4 +25,4 @@ Gardener.hasOne(Plot);
 
 Gardener.belongsTo(Vegetable, { as: 'favorite_vegetable' });
 
-module.exports = db;
+module.exports = {db, Gardener, Plot, Vegetable};
